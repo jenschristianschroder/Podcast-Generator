@@ -485,6 +485,16 @@ Respond ONLY in Markdown format with enhanced script:
 
 [Continue with all dialogue enhanced with appropriate tone labels...]
 
+### CRITICAL FORMAT REQUIREMENT:
+- CORRECT: **Host 1:** [excited] This is amazing!
+- CORRECT: **Host 2:** [reflective] That makes me think about...
+- WRONG: **Host 1** [excited]: This is amazing!
+- WRONG: **Host 1:** This is amazing! [excited]
+- WRONG: Host 1: This is amazing! **Tone: excited**
+- WRONG: **Host 1:** This is amazing! **Tone: excited, welcoming**
+
+The tone label [word] must come IMMEDIATELY after the colon and before the dialogue text.
+
 ## Tone Distribution Analysis
 - **Host 1 Primary Tones**: [List most used tones]
 - **Host 2 Primary Tones**: [List most used tones]
@@ -507,6 +517,8 @@ Respond ONLY in Markdown format with enhanced script:
 - Balance serious and light moments appropriately
 - Preserve all original dialogue content exactly
 - Tone labels should feel natural, not forced
+- **CRITICAL**: Use exact format **Host X:** [tone] dialogue text
+- **NEVER** put tone labels after the dialogue or use **Tone:** format
 ```
 
 ---

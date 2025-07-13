@@ -162,6 +162,32 @@ This agent doesn't use chat completions but rather coordinates TTS generation an
       }
     }
 
+    // If still no utterances found, try the incorrect format that Azure AI sometimes produces
+    if (utterances.length === 0) {
+      this.logger.warn('Trying fallback parsing for incorrect tone format');
+      const incorrectFormatRegex = /Host\s+([12]):\s+(.*?)(?:\*\*Tone:\s*([^*]+)\*\*)?(?=Host\s+[12]:|$)/gs;
+      let match;
+      
+      while ((match = incorrectFormatRegex.exec(script)) !== null) {
+        const [, hostNumber, text, tone] = match;
+        
+        const cleanText = text
+          .replace(/\n+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        if (cleanText.length > 0) {
+          utterances.push({
+            index: utteranceIndex++,
+            speaker: `host${hostNumber}`,
+            tone: tone ? tone.toLowerCase().trim().split(',')[0] : undefined, // Take first tone if multiple
+            text: cleanText,
+            wordCount: this.countSpokenWords(cleanText) // Count only spoken words
+          });
+        }
+      }
+    }
+
     // If still no utterances found, split by paragraphs and alternate speakers
     if (utterances.length === 0) {
       const paragraphs = script

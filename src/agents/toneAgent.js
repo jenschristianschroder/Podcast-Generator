@@ -64,6 +64,15 @@ The tone label MUST come AFTER the colon and BEFORE the dialogue text:
 - CORRECT: **Host 2:** [reflective] That makes me think about...
 - WRONG: **Host 1** [excited]: This is amazing!
 - WRONG: **Host 1:** This is amazing! [excited]
+- WRONG: Host 1: This is amazing! **Tone: excited**
+- WRONG: **Host 1:** This is amazing! **Tone: excited, welcoming**
+
+YOU MUST USE THE CORRECT FORMAT: **Host X:** [tone] dialogue text
+
+## EXAMPLE OF CORRECT OUTPUT:
+**Host 1:** [upbeat] Welcome to today's show!
+**Host 2:** [curious] That's fascinating, tell me more about that.
+**Host 1:** [excited] This breakthrough could change everything!
 
 ## Tone Analysis
 - **Host 1 Tone Distribution**: [List of tones used and frequency]
