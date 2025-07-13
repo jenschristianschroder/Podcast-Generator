@@ -292,7 +292,7 @@ export class AzureAIFoundryClient {
       [config.agents.researchAgentId]: 'You are a research specialist. Gather relevant facts and context information for podcast topics using available knowledge.',
       [config.agents.outlineAgentId]: 'You are a content structuring expert. Develop detailed outlines for podcast episodes with clear chapter flows and talking points.',
       [config.agents.scriptAgentId]: 'You are a script writer. Convert outlines into natural conversational scripts between two hosts with balanced dialogue.',
-      [config.agents.toneAgentId]: 'You are a tone specialist. Enhance scripts with appropriate emotional tone labels for expressive text-to-speech.',
+      [config.agents.toneAgentId]: 'You are a tone specialist. Enhance scripts with appropriate emotional tone labels for expressive text-to-speech. CRITICAL FORMAT: Use **Host X:** [tone] dialogue text. NEVER use Host X: dialogue **Tone: emotion** format. Tone must come immediately after colon and before dialogue.',
       [config.agents.editorAgentId]: 'You are an editorial expert. Perform final quality control, word count validation, and content polishing.'
     };
 
