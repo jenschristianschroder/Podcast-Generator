@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Generated content and output
+temp/*
+output/*
+*.mp3
+*.wav
+podcast-*.json
+
+# Version control and IDE
+.git
+.gitignore
+.vscode/
+
+# Documentation
+README.md
+
+# Test files and debugging
+test/
+coverage/
+.nyc_output/
+debug-*.js
+demo-*.js
+example.js
+setup-validation.js
+simple-*.js
+test-*.js
+verbose-example.js
+diagnostic.js
+quick-test.js
+explore-client.js
+demo-two-voices.js
+
+# Logs
+*.log

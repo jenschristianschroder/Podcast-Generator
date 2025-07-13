@@ -1,0 +1,65 @@
+{
+  "name": "multi-agent-podcast-generator",
+  "version": "1.0.0",
+  "description": "A server-side Node.js application that orchestrates multiple Azure AI Foundry agents to transform a Markdown brief into a fully-voiced podcast episode",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "example": "node example.js",
+    "setup": "node setup-validation.js",
+    "health": "curl -f http://localhost:3000/api/v1/health || node -e \"console.log('Server not running. Start with: npm start')\"",
+    "test": "node --test test/**/*.test.js",
+    "test:unit": "node --test test/unit/**/*.test.js",
+    "test:integration": "node --test test/integration/**/*.test.js",
+    "test:e2e": "node --test test/e2e/**/*.test.js",
+    "build": "echo 'Building Docker image...' && docker build -t multi-agent-podcast .",
+    "lint": "eslint src/ test/",
+    "format": "prettier --write src/ test/"
+  },
+  "keywords": [
+    "podcast",
+    "azure",
+    "ai",
+    "tts",
+    "multi-agent",
+    "markdown"
+  ],
+  "author": "Multi-Agent Podcasts Inc.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@azure/ai-projects": "^1.0.0-beta.10",
+    "@azure/core-rest-pipeline": "^1.22.0",
+    "@azure/identity": "^4.0.0",
+    "@azure/openai": "^1.0.0-beta.12",
+    "@azure/search-documents": "^12.0.0",
+    "axios": "^1.6.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "form-data": "^4.0.0",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "marked": "^9.1.6",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.20.1",
+    "strip-markdown": "^6.0.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.0",
+    "supertest": "^6.3.3"
+  }
+}
