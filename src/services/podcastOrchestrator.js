@@ -13,6 +13,7 @@ import { ToneAgent } from '../agents/toneAgent.js';
 import { EditorAgent } from '../agents/editorAgent.js';
 import { TTSAgent } from '../agents/ttsAgent.js';
 import { AudioService } from './audioService.js';
+import { ContentFetcher } from './contentFetcher.js';
 
 const logger = createLogger('PodcastOrchestrator');
 
@@ -33,6 +34,7 @@ export class PodcastOrchestrator {
     };
     
     this.audioService = new AudioService();
+    this.contentFetcher = new ContentFetcher();
     this.activeGenerations = new Map();
   }
 
@@ -85,21 +87,58 @@ export class PodcastOrchestrator {
       artifacts.plan = plan;
       logger.agentComplete('PlannerAgent', { chaptersPlanned: plan.chapters?.length });
 
-      // Step 2: Research
+      // Step 2: Content Fetching & Research
       await this.updateProgress(progressCallback, 'research', 2, 7);
       
-      const researchInput = {
-        topic,
-        focus,
-        plan: plan.content,
-        chapters: plan.chapters,
-        source
-      };
+      let sourceContent = null;
+      let research = null;
       
-      logger.agentStart('ResearchAgent', researchInput);
-      const research = await this.agents.research.execute(researchInput);
+      if (source) {
+        // Fetch and use source content for grounding
+        logger.debug('Fetching source content for grounding', { source: source.substring(0, 100) });
+        try {
+          sourceContent = await this.contentFetcher.fetchContent(source);
+          artifacts.sourceContent = sourceContent;
+          
+          // Use source content as primary research material
+          research = {
+            content: `# Research Based on Source Material\n\n## Source: ${sourceContent.title}\n\n${sourceContent.content}`,
+            sources: [sourceContent.source],
+            wordCount: sourceContent.wordCount,
+            metadata: {
+              sourceProvided: true,
+              sourceWordCount: sourceContent.wordCount,
+              sourceTitle: sourceContent.title
+            }
+          };
+          
+          logger.agentComplete('ContentFetcher', { 
+            wordCount: sourceContent.wordCount,
+            title: sourceContent.title 
+          });
+        } catch (error) {
+          logger.error('Failed to fetch source content, falling back to standard research', { error: error.message });
+          // Fall back to standard research if source fetching fails
+          sourceContent = null;
+        }
+      }
+      
+      if (!sourceContent) {
+        // Standard research when no source provided or source fetching failed
+        const researchInput = {
+          topic,
+          focus,
+          plan: plan.content,
+          chapters: plan.chapters,
+          source
+        };
+        
+        logger.agentStart('ResearchAgent', researchInput);
+        research = await this.agents.research.execute(researchInput);
+        logger.agentComplete('ResearchAgent', { sourcesFound: research.sources?.length });
+      }
+      
       artifacts.research = research;
-      logger.agentComplete('ResearchAgent', { sourcesFound: research.sources?.length });
 
       // Step 3: Outline
       await this.updateProgress(progressCallback, 'outlining', 3, 7);

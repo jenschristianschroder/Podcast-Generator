@@ -56,6 +56,9 @@ function parseArgs() {
       case '--duration':
         config.durationMin = parseInt(args[++i]) || 5;
         break;
+      case '--source':
+        config.source = args[++i] || "";
+        break;
       case '--config':
         const configFile = args[++i];
         if (configFile && fs.existsSync(configFile)) {
@@ -89,6 +92,7 @@ Usage:
 Options:
   --topic <string>     Topic for the podcast (required)
   --focus <string>     Specific focus or angle
+  --source <string>    Source URL or file path for content grounding
   --mood <string>      Overall mood (neutral, excited, calm, reflective, enthusiastic)
   --style <string>     Conversation style (conversational, storytelling)
   --chapters <number>  Number of chapters (1-10)
